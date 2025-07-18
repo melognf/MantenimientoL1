@@ -1,0 +1,214 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  .maquina {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 40px solid #aaa;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: border-color 0.3s ease;
+  }
+
+  .maquina.verde { border-color: #28a745; }
+  .maquina.amarillo { border-color: #ffc107; }
+  .maquina.rojo { border-color: #dc3545; }
+
+  .maquina h2 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #222;
+  }
+
+  .estado {
+    font-size: 1em;
+    margin-top: 5px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .tareas {
+    margin-top: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .tarea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border-left: 5px solid #17a2b8;
+  }
+
+  .tarea button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .tarea button:hover {
+    background: #218838;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.95em;
+    box-sizing: border-box;
+  }
+
+  .botones {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+
+  button {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95em;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .agregar { background: #007bff; color: white; }
+  .agregar:hover { background: #0056b3; }
+
+  .problema { background: #dc3545; color: white; }
+  .problema:hover { background: #b02a37; }
+
+  .liberar { background: #6c757d; color: white; }
+  .liberar:hover { background: #5a6268; }
+
+  @media (max-width: 600px) {
+    body {
+      padding: 10px;
+    }
+
+    .maquina {
+      padding: 15px;
+    }
+
+    .botones {
+      flex-direction: row;
+      gap: 6px;
+    }
+
+    button {
+      font-size: 0.85em;
+      padding: 8px;
+    }
+
+    input[type="text"] {
+      font-size: 0.85em;
+    }
+
+    .tareas {
+      padding: 0 2px;
+    }
+  }
+
+  .tarea .solucionar {
+  background: #ffc107;
+  color: black;
+  margin-right: 5px;
+}
+
+.tarea .solucionar:hover {
+  background: #e0a800;
+}
+
+.tarea .eliminar {
+  background: #dc3545;
+  color: white;
+}
+
+.tarea .eliminar:hover {
+  background: #b02a37;
+}
+
+.tarea div {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.botones button {
+  flex: 1;
+  min-width: 90px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .botones button {
+    font-size: 12px;
+    padding: 5px 8px;
+    min-width: 80px;
+  }
+
+  .maquina input[type="text"] {
+    font-size: 14px;
+  }
+
+  .estado {
+    font-size: 14px;
+  }
+
+  .maquina h2 {
+    font-size: 16px;
+  }
+}
+
+/* Tarea común: botón amarillo con letras rojas */
+button.solucionar {
+  background-color: yellow;
+  color: red;
+  font-weight: bold;
+  border: 2px solid black;
+}
+
+/* Tarea grave: botón rojo con letras blancas */
+button.solucionar.grave {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  border: 2px solid darkred;
+}
+
