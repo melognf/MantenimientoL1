@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, doc, getDoc, updateDoc, setDoc,
-  onSnapshot, collection
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Configuración Firebase
@@ -54,7 +54,7 @@ maquinas.forEach(nombre => {
   const docRef = doc(db, "maquinas", nombre);
 
   // Escucha en tiempo real
-  onSnapshot(docRef, snapshot => {
+  onSnapshot(docRef, async snapshot => {
     if (!snapshot.exists()) return;
     const data = snapshot.data();
     const estado = data.estado;
@@ -64,52 +64,103 @@ maquinas.forEach(nombre => {
     div.querySelector(".estado").innerText = "Estado: " + estado.toUpperCase();
 
     const tareasDiv = div.querySelector(".tareas");
-    tareasDiv.innerHTML = tareas.map(t =>
-  `<div class="tarea">
-    <span>${t.descripcion}</span>
-    <div>
-      ${!t.resuelta 
-        ? `<button class="solucionar${t.grave ? ' grave' : ''}" data-id="${t.id}">Solucionar</button>`  
-        : `<span class="resuelta">✅</span>`}
-      <button class="eliminar" data-id="${t.id}">🗑️</button>
-    </div>
-  </div>`
-   ).join("");
+    tareasDiv.innerHTML = ""; // limpio el contenedor
 
+    tareas.forEach(t => {
+      const tareaDiv = document.createElement("div");
+      tareaDiv.classList.add("tarea");
+      tareaDiv.dataset.id = t.id;
 
-    tareasDiv.querySelectorAll("button.solucionar").forEach(btn => {
-  btn.onclick = async () => {
-    const tareaId = btn.dataset.id;
-    const nuevasTareas = tareas.map(t => 
-      t.id === tareaId ? { ...t, resuelta: true } : t
-    );
-    const hayGrave = nuevasTareas.some(t => !t.resuelta && t.grave);
-    const hayPendientes = nuevasTareas.some(t => !t.resuelta);
-    await setDoc(docRef, {
-  ...data,
-  tareas: nuevasTareas,
-  estado: calcularEstado(nuevasTareas),
-  ultimaActualizacion: Date.now()
-});
+      // Descripción
+      const descripcionSpan = document.createElement("span");
+      descripcionSpan.style.fontWeight = "bold";
+      descripcionSpan.textContent = t.descripcion;
+      tareaDiv.appendChild(descripcionSpan);
 
+      // Textarea detalle
+      const detalleTextarea = document.createElement("textarea");
+      detalleTextarea.placeholder = "Detalle...";
+      detalleTextarea.rows = 3;
+      detalleTextarea.style.width = "100%";
+      detalleTextarea.style.marginTop = "5px";
+      detalleTextarea.value = t.detalle || "";
+      tareaDiv.appendChild(detalleTextarea);
 
-  };
-});
+      // Botón guardar detalle
+      const guardarBtn = document.createElement("button");
+      guardarBtn.textContent = "💾 Guardar detalle";
+      guardarBtn.style.marginTop = "5px";
+      tareaDiv.appendChild(guardarBtn);
 
-tareasDiv.querySelectorAll("button.eliminar").forEach(btn => {
-  btn.onclick = async () => {
-    const tareaId = btn.dataset.id;
-    const nuevasTareas = tareas.filter(t => t.id !== tareaId);
-    const hayGrave = nuevasTareas.some(t => !t.resuelta && t.grave);
-const hayPendientes = nuevasTareas.some(t => !t.resuelta);
-await updateDoc(docRef, {
-  tareas: nuevasTareas,
-  estado: hayGrave ? "rojo" : hayPendientes ? "amarillo" : "verde"
-});
+      // Contenedor botones solucionar/eliminar
+      const botonesDiv = document.createElement("div");
+      botonesDiv.style.marginTop = "5px";
 
-  };
-});
+      if (!t.resuelta) {
+        const solucionarBtn = document.createElement("button");
+        solucionarBtn.textContent = "Solucionar";
+        solucionarBtn.classList.add("solucionar");
+        if (t.grave) solucionarBtn.classList.add("grave");
+        solucionarBtn.dataset.id = t.id;
+        botonesDiv.appendChild(solucionarBtn);
 
+        // Listener solucionar
+        solucionarBtn.onclick = async () => {
+          const nuevasTareas = tareas.map(task =>
+            task.id === t.id ? { ...task, resuelta: true } : task
+          );
+          await setDoc(docRef, {
+            ...data,
+            tareas: nuevasTareas,
+            estado: calcularEstado(nuevasTareas),
+            ultimaActualizacion: Date.now()
+          });
+        };
+      } else {
+        const resueltaSpan = document.createElement("span");
+        resueltaSpan.classList.add("resuelta");
+        resueltaSpan.textContent = "✅";
+        botonesDiv.appendChild(resueltaSpan);
+      }
+
+      // Botón eliminar
+      const eliminarBtn = document.createElement("button");
+      eliminarBtn.textContent = "🗑️";
+      eliminarBtn.dataset.id = t.id;
+      botonesDiv.appendChild(eliminarBtn);
+
+      eliminarBtn.onclick = async () => {
+        const nuevasTareas = tareas.filter(task => task.id !== t.id);
+        await updateDoc(docRef, {
+          tareas: nuevasTareas,
+          estado: calcularEstado(nuevasTareas),
+          ultimaActualizacion: Date.now()
+        });
+      };
+
+      tareaDiv.appendChild(botonesDiv);
+
+      // Listener guardar detalle
+      guardarBtn.onclick = async () => {
+        const nuevoDetalle = detalleTextarea.value;
+        const nuevasTareas = tareas.map(task =>
+          task.id === t.id ? { ...task, detalle: nuevoDetalle } : task
+        );
+        await updateDoc(docRef, {
+          tareas: nuevasTareas,
+          estado: calcularEstado(nuevasTareas),
+          ultimaActualizacion: Date.now()
+        });
+        guardarBtn.textContent = "✅ Guardado";
+        guardarBtn.disabled = true;
+        setTimeout(() => {
+          guardarBtn.textContent = "💾 Guardar detalle";
+          guardarBtn.disabled = false;
+        }, 1500);
+      };
+
+      tareasDiv.appendChild(tareaDiv);
+    });
   });
 
   // Agregar tarea
@@ -123,41 +174,40 @@ await updateDoc(docRef, {
     const nuevasTareas = [...(data.tareas || []), {
       id: crypto.randomUUID(),
       descripcion: texto,
+      detalle: "", // importante incluir detalle vacío
       resuelta: false
     }];
     await setDoc(docRef, {
-  ...data,
-  tareas: nuevasTareas,
-  estado: calcularEstado(nuevasTareas),
-  ultimaActualizacion: Date.now()
-});
+      ...data,
+      tareas: nuevasTareas,
+      estado: calcularEstado(nuevasTareas),
+      ultimaActualizacion: Date.now()
+    });
 
     input.value = "";
   };
 
   // Reportar problema grave
   div.querySelector(".problema").onclick = async () => {
-  const descripcion = prompt("Describa el problema grave:");
-  if (!descripcion || !descripcion.trim()) return;
+    const descripcion = prompt("Describa el problema grave:");
+    if (!descripcion || !descripcion.trim()) return;
 
-  const snap = await getDoc(docRef);
-  const data = snap.exists() ? snap.data() : { tareas: [], estado: "verde" };
-  const nuevasTareas = [...(data.tareas || []), {
-    id: crypto.randomUUID(),
-    descripcion: descripcion.trim(),
-    resuelta: false,
-    grave: true
-  }];
-  await updateDoc(docRef, {
-    ...data,
-    tareas: nuevasTareas,
-    estado: calcularEstado(nuevasTareas),
-
-    ultimaActualizacion: Date.now()
-  });
-};
-
-
+    const snap = await getDoc(docRef);
+    const data = snap.exists() ? snap.data() : { tareas: [], estado: "verde" };
+    const nuevasTareas = [...(data.tareas || []), {
+      id: crypto.randomUUID(),
+      descripcion: descripcion.trim(),
+      detalle: "", // también detalle vacío
+      resuelta: false,
+      grave: true
+    }];
+    await updateDoc(docRef, {
+      ...data,
+      tareas: nuevasTareas,
+      estado: calcularEstado(nuevasTareas),
+      ultimaActualizacion: Date.now()
+    });
+  };
 
   // Liberar manualmente
   div.querySelector(".liberar").onclick = async () => {
