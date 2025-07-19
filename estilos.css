@@ -112,7 +112,7 @@ input[type="text"] {
 /* Botones de tareas */
 .tarea .solucionar {
   background: #ffc107;
-  color: red;
+  color: black;
   font-weight: bold;
   border: 2px solid black;
   margin-right: 5px;

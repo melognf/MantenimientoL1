@@ -45,7 +45,7 @@ maquinas.forEach(nombre => {
     <input type="text" placeholder="Nueva tarea..." />
     <div class="botones">
       <button class="agregar">Agregar Tarea</button>
-      <button class="problema">Problema Grave</button>
+      <button class="problema">Falla crìtica</button>
       <button class="liberar">Liberar Máquina</button>
     </div>
   `;
@@ -130,13 +130,17 @@ maquinas.forEach(nombre => {
       botonesDiv.appendChild(eliminarBtn);
 
       eliminarBtn.onclick = async () => {
-        const nuevasTareas = tareas.filter(task => task.id !== t.id);
-        await updateDoc(docRef, {
-          tareas: nuevasTareas,
-          estado: calcularEstado(nuevasTareas),
-          ultimaActualizacion: Date.now()
-        });
-      };
+  const confirmacion = confirm("¿Estás seguro de eliminar esta tarea?");
+  if (!confirmacion) return;
+
+  const nuevasTareas = tareas.filter(task => task.id !== t.id);
+  await updateDoc(docRef, {
+    tareas: nuevasTareas,
+    estado: calcularEstado(nuevasTareas),
+    ultimaActualizacion: Date.now()
+  });
+};
+
 
       tareaDiv.appendChild(botonesDiv);
 
@@ -211,10 +215,14 @@ maquinas.forEach(nombre => {
 
   // Liberar manualmente
   div.querySelector(".liberar").onclick = async () => {
-    await updateDoc(docRef, {
-      estado: "verde",
-      tareas: [],
-      ultimaActualizacion: Date.now()
-    });
-  };
+  const confirmacion = confirm("¿Estás seguro de borrar todas las tareas?");
+  if (!confirmacion) return;
+
+  await updateDoc(docRef, {
+    estado: "verde",
+    tareas: [],
+    ultimaActualizacion: Date.now()
+  });
+};
+
 });
