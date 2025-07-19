@@ -113,13 +113,20 @@ body {
     }
 
     .maquina {
-      padding: 15px;
-    }
+    border-left-width: 20px;
+  }
 
     .botones {
-      flex-direction: row;
-      gap: 6px;
-    }
+    flex-direction: column; /* apilar verticalmente */
+    gap: 10px;
+  }
+
+  .botones button {
+    width: 100%;       /* ocupar todo el ancho disponible */
+    min-width: unset;  /* para no limitar el ancho */
+    font-size: 1rem;   /* texto un poco más grande para touch */
+    padding: 12px 0;
+  }
 
     button {
       font-size: 0.85em;
