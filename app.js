@@ -88,8 +88,12 @@ maquinas.forEach(nombre => {
 
       // Botón guardar detalle
       const guardarBtn = document.createElement("button");
-      guardarBtn.textContent = "💾 Guardar detalle";
+      guardarBtn.textContent = "Guardar detalle";
       guardarBtn.style.marginTop = "5px";
+      guardarBtn.title = "Guardar detalle";
+      guardarBtn.style.backgroundColor = "#3d3939ff"; // gris medio
+
+
       tareaDiv.appendChild(guardarBtn);
 
       // Contenedor botones solucionar/eliminar
@@ -130,8 +134,8 @@ maquinas.forEach(nombre => {
       botonesDiv.appendChild(eliminarBtn);
 
       eliminarBtn.onclick = async () => {
-  const confirmacion = confirm("¿Estás seguro de eliminar esta tarea?");
-  if (!confirmacion) return;
+  const seguro = await mostrarConfirmacion("¿Estás seguro de eliminar esta tarea?");
+  if (!seguro) return;
 
   const nuevasTareas = tareas.filter(task => task.id !== t.id);
   await updateDoc(docRef, {
@@ -140,6 +144,8 @@ maquinas.forEach(nombre => {
     ultimaActualizacion: Date.now()
   });
 };
+
+
 
 
       tareaDiv.appendChild(botonesDiv);
@@ -158,7 +164,7 @@ maquinas.forEach(nombre => {
         guardarBtn.textContent = "✅ Guardado";
         guardarBtn.disabled = true;
         setTimeout(() => {
-          guardarBtn.textContent = "💾 Guardar detalle";
+          guardarBtn.textContent = "Guardar detalle";
           guardarBtn.disabled = false;
         }, 1500);
       };
@@ -215,8 +221,8 @@ maquinas.forEach(nombre => {
 
   // Liberar manualmente
   div.querySelector(".liberar").onclick = async () => {
-  const confirmacion = confirm("¿Estás seguro de borrar todas las tareas?");
-  if (!confirmacion) return;
+  const seguro = await mostrarConfirmacion("¿Estás seguro de borrar todas las tareas?");
+  if (!seguro) return;
 
   await updateDoc(docRef, {
     estado: "verde",
@@ -224,5 +230,34 @@ maquinas.forEach(nombre => {
     ultimaActualizacion: Date.now()
   });
 };
+
+
+function mostrarConfirmacion(mensaje) {
+  return new Promise(resolve => {
+    const modal = document.getElementById("modalConfirmacion");
+    const mensajeElem = document.getElementById("mensajeConfirmacion");
+    const btnSi = document.getElementById("btnSi");
+    const btnNo = document.getElementById("btnNo");
+
+    mensajeElem.textContent = mensaje;
+    modal.style.display = "flex";
+
+    const cerrar = () => {
+      modal.style.display = "none";
+      btnSi.onclick = null;
+      btnNo.onclick = null;
+    };
+
+    btnSi.onclick = () => {
+      cerrar();
+      resolve(true);
+    };
+    btnNo.onclick = () => {
+      cerrar();
+      resolve(false);
+    };
+  });
+}
+
 
 });
