@@ -93,7 +93,7 @@ detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
       detalleTextarea.style.height = "auto";
       detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
 });
-      
+      tareaDiv.appendChild(detalleTextarea);
 
       // Botón guardar detalle
       const guardarBtn = document.createElement("button");
