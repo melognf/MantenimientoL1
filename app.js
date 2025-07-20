@@ -84,6 +84,12 @@ maquinas.forEach(nombre => {
       detalleTextarea.style.width = "100%";
       detalleTextarea.style.marginTop = "5px";
       detalleTextarea.value = t.detalle || "";
+      detalleTextarea.style.overflowY = "hidden";
+detalleTextarea.style.resize = "none";
+detalleTextarea.addEventListener("input", () => {
+  detalleTextarea.style.height = "auto";
+  detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
+});
       tareaDiv.appendChild(detalleTextarea);
 
       // Botón guardar detalle
