@@ -88,7 +88,7 @@ maquinas.forEach(nombre => {
       detalleTextarea.value = t.detalle || "";
       
       detalleTextarea.style.height = "auto";
-detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
+      detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
       detalleTextarea.addEventListener("input", () => {
       detalleTextarea.style.height = "auto";
       detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
