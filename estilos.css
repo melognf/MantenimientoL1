@@ -208,5 +208,8 @@ textarea {
   min-height: 40px;
   resize: none;
   overflow-y: hidden;
+  width: 100%; /* recomendable para que tome el ancho correcto */
+  box-sizing: border-box; /* para evitar overflow */
 }
+
 

@@ -78,22 +78,30 @@ maquinas.forEach(nombre => {
       tareaDiv.appendChild(descripcionSpan);
 
       // Textarea detalle
-      const detalleTextarea = document.createElement("textarea");
-      detalleTextarea.placeholder = "Detalle...";
-      detalleTextarea.rows = 3;
-      detalleTextarea.style.width = "100%";
-      detalleTextarea.style.marginTop = "5px";
-      detalleTextarea.style.overflowY = "hidden";
-      detalleTextarea.style.resize = "none";
-      detalleTextarea.value = t.detalle || "";
-      
-      detalleTextarea.style.height = "auto";
-      detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
-      detalleTextarea.addEventListener("input", () => {
-      detalleTextarea.style.height = "auto";
-      detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
+      // Textarea detalle
+const detalleTextarea = document.createElement("textarea");
+detalleTextarea.placeholder = "Detalle...";
+detalleTextarea.rows = 3;
+detalleTextarea.style.width = "100%";
+detalleTextarea.style.marginTop = "5px";
+detalleTextarea.style.overflowY = "hidden";
+detalleTextarea.style.resize = "none";
+detalleTextarea.style.boxSizing = "border-box";
+detalleTextarea.value = t.detalle || "";
+
+// Autoajuste al escribir
+detalleTextarea.addEventListener("input", () => {
+  detalleTextarea.style.height = "auto";
+  detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
 });
-      tareaDiv.appendChild(detalleTextarea);
+
+// Autoajuste inicial
+setTimeout(() => {
+  detalleTextarea.style.height = "auto";
+  detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
+}, 0);
+
+tareaDiv.appendChild(detalleTextarea);
 
       // Botón guardar detalle
       const guardarBtn = document.createElement("button");
