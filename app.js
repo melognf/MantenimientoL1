@@ -83,14 +83,17 @@ maquinas.forEach(nombre => {
       detalleTextarea.rows = 3;
       detalleTextarea.style.width = "100%";
       detalleTextarea.style.marginTop = "5px";
-      detalleTextarea.value = t.detalle || "";
       detalleTextarea.style.overflowY = "hidden";
-detalleTextarea.style.resize = "none";
-detalleTextarea.addEventListener("input", () => {
-  detalleTextarea.style.height = "auto";
-  detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
+      detalleTextarea.style.resize = "none";
+      detalleTextarea.value = t.detalle || "";
+      
+      detalleTextarea.style.height = "auto";
+detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
+      detalleTextarea.addEventListener("input", () => {
+      detalleTextarea.style.height = "auto";
+      detalleTextarea.style.height = detalleTextarea.scrollHeight + "px";
 });
-      tareaDiv.appendChild(detalleTextarea);
+      
 
       // Botón guardar detalle
       const guardarBtn = document.createElement("button");
