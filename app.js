@@ -259,5 +259,15 @@ function mostrarConfirmacion(mensaje) {
   });
 }
 
+document.querySelectorAll("textarea").forEach(textarea => {
+  textarea.style.overflowY = "hidden";
+  textarea.style.resize = "none";
+
+  textarea.addEventListener("input", () => {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+  });
+});
+
 
 });

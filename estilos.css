@@ -203,3 +203,10 @@ input[type="text"] {
     padding: 10px 8px;
   }
 }
+
+textarea {
+  min-height: 40px;
+  resize: none;
+  overflow-y: hidden;
+}
+
