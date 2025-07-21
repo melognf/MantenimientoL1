@@ -10,13 +10,11 @@
 
   <link rel="stylesheet" href="estilos.css">
 </head>
-<body>
-   <div id="splash" class="splash-screen">
-  <img src="icon-192.png" alt="Logo" class="splash-logo">
-  <p class="splash-text">Cargando...</p>
+<div id="splash" class="splash-screen">
+  <img src="icon-192.png" alt="Logo" class="splash-logo" />
+  <p class="splash-text">Iniciando sistema...</p>
 </div>
-
-  <h1>Estado de Línea de Producción</h1>
+<h1>Estado de Línea de Producción</h1>
   <div id="maquinasContainer"></div>
 
   <!-- Modal de Confirmación -->
@@ -37,15 +35,16 @@
       .catch(err => console.error('❌ Error al registrar SW:', err));
   }
 </script>
+
 <script>
   window.addEventListener("load", () => {
     const splash = document.getElementById("splash");
     setTimeout(() => {
-      splash.classList.add("ocultar");
+      splash.classList.add("hidden");
       setTimeout(() => {
         splash.style.display = "none";
-      }, 800); // Coincide con el tiempo de transición
-    }, 2500); // Espera visible del splash
+      }, 800); // coincide con transition
+    }, 2000); // mostrarse visible 2s mínimo
   });
 </script>
 

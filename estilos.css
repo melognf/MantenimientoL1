@@ -221,10 +221,11 @@ textarea {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  opacity: 1;
   transition: opacity 0.8s ease;
+  opacity: 1;
 }
-.splash-screen.ocultar {
+
+.splash-screen.hidden {
   opacity: 0;
   pointer-events: none;
 }
@@ -232,19 +233,19 @@ textarea {
 .splash-logo {
   width: 100px;
   height: 100px;
-  animation: bounce 1.5s infinite;
+  animation: bounce 1.2s infinite;
 }
 
 .splash-text {
   color: white;
-  font-size: 1.5rem;
-  margin-top: 20px;
+  font-size: 1.4rem;
+  margin-top: 15px;
   animation: fadeIn 1s ease-in-out;
 }
 
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+  50% { transform: translateY(-12px); }
 }
 
 @keyframes fadeIn {
