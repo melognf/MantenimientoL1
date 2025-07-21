@@ -10,10 +10,7 @@
 
   <link rel="stylesheet" href="estilos.css">
 </head>
-<div id="splash" class="splash-screen">
-  <img src="icon-192.png" alt="Logo" class="splash-logo" />
-  <p class="splash-text">Iniciando sistema...</p>
-</div>
+
 <h1>Estado de Línea de Producción</h1>
   <div id="maquinasContainer"></div>
 
@@ -35,20 +32,6 @@
       .catch(err => console.error('❌ Error al registrar SW:', err));
   }
 </script>
-
-<script>
-  window.addEventListener("load", () => {
-    const splash = document.getElementById("splash");
-    setTimeout(() => {
-      splash.classList.add("hidden");
-      setTimeout(() => {
-        splash.style.display = "none";
-      }, 800); // coincide con transition
-    }, 2000); // mostrarse visible 2s mínimo
-  });
-</script>
-
-
 
 </body>
 </html>
