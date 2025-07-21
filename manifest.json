@@ -1,6 +1,6 @@
 {
   "name": "Control de Producción",
-  "short_name": "Producción",
+  "short_name": "ControlProd",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#FE001A",
