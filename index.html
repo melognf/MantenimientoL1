@@ -38,14 +38,14 @@
   }
 </script>
 <script>
-  // Opcional: si querés eliminar el splash después de cargar todo
   window.addEventListener("load", () => {
-    setTimeout(() => {
-      const splash = document.getElementById("splash");
-      if (splash) splash.style.display = "none";
-    }, 3000); // Espera total: 3 segundos
+    const splash = document.getElementById("splash");
+    splash.addEventListener("animationend", () => {
+      splash.style.display = "none";
+    });
   });
 </script>
+
 
 </body>
 </html>
