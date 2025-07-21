@@ -40,11 +40,15 @@
 <script>
   window.addEventListener("load", () => {
     const splash = document.getElementById("splash");
-    splash.addEventListener("animationend", () => {
-      splash.style.display = "none";
-    });
+    setTimeout(() => {
+      splash.classList.add("ocultar");
+      setTimeout(() => {
+        splash.style.display = "none";
+      }, 800); // Coincide con el tiempo de transición
+    }, 2500); // Espera visible del splash
   });
 </script>
+
 
 
 </body>

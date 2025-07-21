@@ -221,7 +221,12 @@ textarea {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  animation: fadeOut 1s ease 2.5s forwards;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+.splash-screen.ocultar {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .splash-logo {
@@ -237,18 +242,12 @@ textarea {
   animation: fadeIn 1s ease-in-out;
 }
 
-/* Animaciones */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-15px); }
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; visibility: hidden; }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
