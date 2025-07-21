@@ -146,8 +146,13 @@ tareaDiv.appendChild(detalleTextarea);
 
       // Botón eliminar
       const eliminarBtn = document.createElement("button");
-      eliminarBtn.textContent = "🗑️";
+      eliminarBtn.textContent = "❌ Eliminar";
       eliminarBtn.dataset.id = t.id;
+      eliminarBtn.style.backgroundColor = "transparent";
+eliminarBtn.style.border = "none";
+eliminarBtn.style.fontSize = "12 px";
+eliminarBtn.style.cursor = "pointer";
+eliminarBtn.style.color = "red"; // o negro
       botonesDiv.appendChild(eliminarBtn);
 
       eliminarBtn.onclick = async () => {
