@@ -11,6 +11,10 @@
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+   <div id="splash" class="splash-screen">
+  <img src="icon-192.png" alt="Logo" class="splash-logo">
+  <p class="splash-text">Cargando...</p>
+</div>
 
   <h1>Estado de Línea de Producción</h1>
   <div id="maquinasContainer"></div>
@@ -32,6 +36,15 @@
       .then(() => console.log('✅ Service Worker registrado'))
       .catch(err => console.error('❌ Error al registrar SW:', err));
   }
+</script>
+<script>
+  // Opcional: si querés eliminar el splash después de cargar todo
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      const splash = document.getElementById("splash");
+      if (splash) splash.style.display = "none";
+    }, 3000); // Espera total: 3 segundos
+  });
 </script>
 
 </body>
