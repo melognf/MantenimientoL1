@@ -1,4 +1,4 @@
-const CACHE_NAME = "mantenimiento-v1";
+const CACHE_NAME = "mantenimiento-v2";
 const urlsToCache = [
   "./",
   "./index.html",
