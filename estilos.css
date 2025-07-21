@@ -132,17 +132,23 @@ input[type="text"] {
 }
 
 .tarea .eliminar {
-  background: #dc3545;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
+  background: transparent;
+  color: red;
+  font-weight: bold;
   border: none;
   cursor: pointer;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .tarea .eliminar:hover {
-  background: #b02a37;
+  text-decoration: underline;
 }
+
+
+
 
 .tarea div {
   display: flex;

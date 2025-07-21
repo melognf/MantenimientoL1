@@ -119,7 +119,7 @@ tareaDiv.appendChild(detalleTextarea);
 
       if (!t.resuelta) {
         const solucionarBtn = document.createElement("button");
-        solucionarBtn.textContent = "Solucionar";
+        solucionarBtn.textContent = "Solucionado";
         solucionarBtn.classList.add("solucionar");
         if (t.grave) solucionarBtn.classList.add("grave");
         solucionarBtn.dataset.id = t.id;
@@ -146,7 +146,10 @@ tareaDiv.appendChild(detalleTextarea);
 
       // Botón eliminar
       const eliminarBtn = document.createElement("button");
-      eliminarBtn.textContent = "❌ Eliminar";
+eliminarBtn.innerHTML = "❌ <span style='margin-left:5px;'>Eliminar</span>";
+eliminarBtn.dataset.id = t.id;
+eliminarBtn.className = "eliminar"; // usá la clase para darle estilo
+
       eliminarBtn.dataset.id = t.id;
       eliminarBtn.style.backgroundColor = "transparent";
 eliminarBtn.style.border = "none";
