@@ -40,7 +40,11 @@ maquinas.forEach(nombre => {
   div.className = "maquina";
   div.innerHTML = `
     <h2>${nombre.toUpperCase()}</h2>
-    <div class="estado">Cargando estado...</div>
+    <div class="estado">
+  <span class="estado-circulo"></span>
+  <span class="estado-texto">Cargando estado...</span>
+</div>
+
     <div class="tareas"></div>
     <input type="text" placeholder="Nueva tarea..." />
     <div class="botones">
@@ -61,7 +65,11 @@ maquinas.forEach(nombre => {
     const tareas = data.tareas || [];
 
     div.className = "maquina " + estado;
-    div.querySelector(".estado").innerText = "Estado: " + estado.toUpperCase();
+    div.querySelector(".estado-texto").innerText = "Estado: " + estado.toUpperCase();
+
+const circulo = div.querySelector(".estado-circulo");
+circulo.className = "estado-circulo " + estado; // le damos clase según el estado
+
 
     const tareasDiv = div.querySelector(".tareas");
     tareasDiv.innerHTML = ""; // limpio el contenedor
