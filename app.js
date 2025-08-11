@@ -1,11 +1,3 @@
-
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore, doc, getDoc, updateDoc, setDoc,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 (function () {
   var KEY  = 'gate_ok_v1';        // recordá la sesión en esta pestaña
   var PASS = 'chespirito';        // <-- tu clave
@@ -41,6 +33,14 @@ import {
   );
   document.close();
 })();
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, updateDoc, setDoc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
 
 
 // Configuración Firebase
