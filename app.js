@@ -1,3 +1,18 @@
+(() => {
+  const PASS = 'chespirito';
+
+  const entrada = (prompt('Ingrese la contraseña para acceder:') ?? '')
+    .normalize('NFKC')   // normaliza caracteres “raros”
+    .trim()              // saca espacios al inicio/fin
+    .toLowerCase();      // ignora mayúsculas
+
+  if (entrada !== PASS.toLowerCase()) {
+    alert('Contraseña incorrecta. Acceso denegado.');
+    document.body.innerHTML = "<h2 style='text-align:center; color:red;'>Acceso denegado</h2>";
+    throw new Error('Acceso bloqueado');
+  }
+})();
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, doc, getDoc, updateDoc, setDoc,
