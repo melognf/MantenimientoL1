@@ -6,62 +6,40 @@ import {
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// --- Candado con overlay que captura el primer toque (mobile-safe) ---
-(() => {
-  const PASS = 'chespirito';
-  const KEY  = 'l1_gate_v1';
+(function () {
+  var KEY  = 'gate_ok_v1';        // recordá la sesión en esta pestaña
+  var PASS = 'chespirito';        // <-- tu clave
 
   // Si ya validaste en esta pestaña, no pedir de nuevo
   if (sessionStorage.getItem(KEY) === '1') return;
 
-  // Crear overlay que bloquea toda la UI
-  const ov = document.createElement('div');
-  ov.id = 'access-veil';
-  ov.setAttribute('role', 'dialog');
-  ov.style.cssText = `
-    position:fixed; inset:0; z-index:2147483647;
-    background:#0b0d10; display:flex; align-items:center; justify-content:center;
-  `;
-  ov.innerHTML = `
-    <div style="background:#171a1f;color:#fff;border-radius:16px;padding:20px;max-width:360px;width:90%;
-                text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.35);font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;">
-      <h2 style="margin:0 0 8px;font-size:20px;">MANTENIMIENTO L1</h2>
-      <button id="acc-enter" style="padding:10px 16px;border:0;border-radius:999px;background:#22c55e;color:#0b0d10;font-weight:600;cursor:pointer;">
-        Entrar
-      </button>
-      <div id="acc-msg" style="min-height:18px;margin-top:8px;font-size:13px;color:#fca5a5;"></div>
-    </div>
-  `;
-
-  const mount = () => {
-    if (document.body) document.body.appendChild(ov);
-    else document.addEventListener('DOMContentLoaded', () => document.body.appendChild(ov), { once:true });
-  };
-  mount();
-
-  function pedirClave() {
-    const entrada = (prompt('Ingrese la contraseña para acceder:') ?? '')
+  // Intento de prompt
+  var entrada = '';
+  try {
+    entrada = (prompt('Ingrese la contraseña para acceder:') || '')
       .normalize('NFKC').trim();
-    if (entrada.toLowerCase() === PASS.toLowerCase()) {
-      sessionStorage.setItem(KEY, '1');
-      ov.remove();
-      return true;
-    }
-    const m = ov.querySelector('#acc-msg');
-    if (m) m.textContent = 'Contraseña incorrecta.';
-    return false;
+  } catch (e) { entrada = ''; }
+
+  // Validación
+  if (entrada && entrada.toLowerCase() === PASS.toLowerCase()) {
+    sessionStorage.setItem(KEY, '1');
+    return; // deja cargar el resto de la página
   }
 
-  // Botón "Entrar"
-  ov.querySelector('#acc-enter').addEventListener('click', pedirClave);
-
-  // También si toca el fondo (fuera de la tarjeta), pedir clave
-  ov.addEventListener('pointerdown', (e) => {
-    if (e.target === ov) pedirClave();
-  });
-
-  // Para “cerrar sesión” rápido desde la consola
-  window.resetGateL1 = () => { sessionStorage.removeItem(KEY); location.reload(); };
+  // Denegado o bloqueado: reemplazo la página con un "Reintentar"
+  document.open();
+  document.write(
+    '<!doctype html><meta charset="utf-8"><title>Acceso denegado</title>' +
+    '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0b0d10;color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;">' +
+      '<div style="text-align:center">' +
+        '<h2 style="margin:0 0 8px;">Acceso denegado</h2>' +
+        '<p style="opacity:.85;margin:0 0 12px;">Toque "Reintentar" para ingresar la contraseña.</p>' +
+        '<button id="retry" style="padding:10px 16px;border:0;border-radius:999px;background:#22c55e;color:#0b0d10;font-weight:600;cursor:pointer;">Reintentar</button>' +
+      '</div>' +
+    '</div>' +
+    '<script>document.getElementById("retry").addEventListener("click", function(){ location.reload(); });<\/script>'
+  );
+  document.close();
 })();
 
 
@@ -368,4 +346,3 @@ document.querySelectorAll("textarea").forEach(textarea => {
 
 });
 
-document.addEventListener('DOMContentLoaded', () => pedirClave(), { once:true });
