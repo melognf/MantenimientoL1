@@ -367,3 +367,5 @@ document.querySelectorAll("textarea").forEach(textarea => {
 
 
 });
+
+document.addEventListener('DOMContentLoaded', () => pedirClave(), { once:true });
