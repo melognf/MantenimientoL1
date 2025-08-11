@@ -1,23 +1,69 @@
-(() => {
-  const PASS = 'chespirito';
 
-  const entrada = (prompt('Ingrese la contraseña para acceder:') ?? '')
-    .normalize('NFKC')   // normaliza caracteres “raros”
-    .trim()              // saca espacios al inicio/fin
-    .toLowerCase();      // ignora mayúsculas
-
-  if (entrada !== PASS.toLowerCase()) {
-    alert('Contraseña incorrecta. Acceso denegado.');
-    document.body.innerHTML = "<h2 style='text-align:center; color:red;'>Acceso denegado</h2>";
-    throw new Error('Acceso bloqueado');
-  }
-})();
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, doc, getDoc, updateDoc, setDoc,
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// --- Candado con overlay que captura el primer toque (mobile-safe) ---
+(() => {
+  const PASS = 'chespirito';
+  const KEY  = 'l1_gate_v1';
+
+  // Si ya validaste en esta pestaña, no pedir de nuevo
+  if (sessionStorage.getItem(KEY) === '1') return;
+
+  // Crear overlay que bloquea toda la UI
+  const ov = document.createElement('div');
+  ov.id = 'access-veil';
+  ov.setAttribute('role', 'dialog');
+  ov.style.cssText = `
+    position:fixed; inset:0; z-index:2147483647;
+    background:#0b0d10; display:flex; align-items:center; justify-content:center;
+  `;
+  ov.innerHTML = `
+    <div style="background:#171a1f;color:#fff;border-radius:16px;padding:20px;max-width:360px;width:90%;
+                text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.35);font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;">
+      <h2 style="margin:0 0 8px;font-size:20px;">MANTENIMIENTO L1</h2>
+      <button id="acc-enter" style="padding:10px 16px;border:0;border-radius:999px;background:#22c55e;color:#0b0d10;font-weight:600;cursor:pointer;">
+        Entrar
+      </button>
+      <div id="acc-msg" style="min-height:18px;margin-top:8px;font-size:13px;color:#fca5a5;"></div>
+    </div>
+  `;
+
+  const mount = () => {
+    if (document.body) document.body.appendChild(ov);
+    else document.addEventListener('DOMContentLoaded', () => document.body.appendChild(ov), { once:true });
+  };
+  mount();
+
+  function pedirClave() {
+    const entrada = (prompt('Ingrese la contraseña para acceder:') ?? '')
+      .normalize('NFKC').trim();
+    if (entrada.toLowerCase() === PASS.toLowerCase()) {
+      sessionStorage.setItem(KEY, '1');
+      ov.remove();
+      return true;
+    }
+    const m = ov.querySelector('#acc-msg');
+    if (m) m.textContent = 'Contraseña incorrecta.';
+    return false;
+  }
+
+  // Botón "Entrar"
+  ov.querySelector('#acc-enter').addEventListener('click', pedirClave);
+
+  // También si toca el fondo (fuera de la tarjeta), pedir clave
+  ov.addEventListener('pointerdown', (e) => {
+    if (e.target === ov) pedirClave();
+  });
+
+  // Para “cerrar sesión” rápido desde la consola
+  window.resetGateL1 = () => { sessionStorage.removeItem(KEY); location.reload(); };
+})();
+
 
 // Configuración Firebase
 const firebaseConfig = {
@@ -178,7 +224,7 @@ eliminarBtn.className = "eliminar"; // usá la clase para darle estilo
       eliminarBtn.dataset.id = t.id;
       eliminarBtn.style.backgroundColor = "transparent";
 eliminarBtn.style.border = "none";
-eliminarBtn.style.fontSize = "12 px";
+eliminarBtn.style.fontSize = "12px";
 eliminarBtn.style.cursor = "pointer";
 eliminarBtn.style.color = "red"; // o negro
       botonesDiv.appendChild(eliminarBtn);
