@@ -1,4 +1,4 @@
-const CACHE = 'mantenimiento-runtime-v3';
+const CACHE = 'mantenimiento-runtime-v4';
 
 self.addEventListener('install', (e) => self.skipWaiting());
 
